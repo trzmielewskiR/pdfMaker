@@ -1,0 +1,80 @@
+{
+    "categories": [
+      {
+        "id": 1,
+        "name": "Pizza",
+        "meals": [
+          {
+            "id": 1,
+            "name": "Margarita",
+            "baseCost": 1000,
+            "parameters": [
+              { "id": 1, "name": "Size", "options": [{"name": "mała", "cost": 0}, {"name": "średnia", "cost": 500}, {"name": "duża", "cost": 1000}] },
+              { "id": 2, "name": "Crust Thickness", "options": [{"name": "Cienkie", "cost": 0}, {"name": "Normalne", "cost": 550}, {"name": "Grube", "cost": 1090}] },
+              { "id": 3, "name": "Sauce", "options": [{"name": "Czosnkowy", "cost": 0}, {"name": "Majonez", "cost": 0}, {"name": "Arabski Ostry", "cost": 0}, {"name": "Arabski Łagodny", "cost": 0}, {"name": "Jalapeno", "cost": 0}, {"name": "Ketchup", "cost": 0}, {"name": "1000 Wysp", "cost": 0}] },
+              { "id": 4, "name": "Extra Cheese", "options": [{"name": "tak", "cost": 0}, {"name": "napewno tak", "cost": 0}] }
+            ]
+          },
+          {
+            "id": 2,
+            "name": "Hawajska",
+            "baseCost": 1200,
+            "parameters": [
+              { "id": 1, "name": "Size", "options": [{"name": "mała", "cost": 0}, {"name": "średnia", "cost": 1000}] },
+              { "id": 2, "name": "Crust Thickness", "options": [{"name": "Cienkie", "cost": 0}, {"name": "Normalne", "cost": 550}, {"name": "Grube", "cost": 1090}] },
+              { "id": 3, "name": "Sauce", "options": [{"name": "Czosnkowy", "cost": 0}, {"name": "Majonez", "cost": 0}, {"name": "Arabski Ostry", "cost": 0}, {"name": "Arabski Łagodny", "cost": 0}, {"name": "Jalapeno", "cost": 0}, {"name": "Ketchup", "cost": 0}, {"name": "1000 Wysp", "cost": 0}] },
+              { "id": 4, "name": "Extra Cheese", "options": [{"name": "tak", "cost": 0}, {"name": "napewno tak", "cost": 0}] }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Sałatka",
+        "meals": [
+          {
+            "id": 6,
+            "name": "Grecka",
+            "baseCost": 1000,
+            "parameters": [
+              { "id": 5, "name": "Dressing", "options": [{"name": "Tak", "cost": 550}, {"name": "Nie", "cost": 0}] },
+              { "id": 6, "name": "Meat", "options": [{"name": "Bez mięsa", "cost": 0}, {"name": "Kurczak", "cost": 700}, {"name": "Wołowina", "cost": 900}] },
+              { "id": 7, "name": "Cheese", "options": [{"name": "Z", "cost": 100}, {"name": "Bez", "cost": 0}] }
+            ]
+          },
+          {
+            "id": 7,
+            "name": "Cezar",
+            "baseCost": 1299,
+            "parameters": [
+              { "id": 5, "name": "Dressing", "options": [{"name": "Tak", "cost": 300}, {"name": "Nie", "cost": 0}] },
+              { "id": 6, "name": "Meat", "options": [{"name": "Bez mięsa", "cost": 0}, {"name": "Kurczak", "cost": 700}, {"name": "Wołowina", "cost": 900}] },
+              { "id": 7, "name": "Cheese", "options": [{"name": "Z", "cost": 100}, {"name": "Bez", "cost": 0}] }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Dodatki",
+        "meals": [
+          {
+            "id": 8,
+            "name": "Frytki",
+            "baseCost": 800
+          },
+          {
+            "id": 9,
+            "name": "Ziemniaki Opiekane",
+            "baseCost": 1000
+          },
+          {
+            "id": 10,
+            "name": "Chleb",
+            "baseCost": 500
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menu</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .category { margin-bottom: 30px; }
+        .meal { margin-top: 15px; }
+        .parameter { margin-left: 20px; font-style: italic; }
+    </style>
+</head>
+<body>
+    {{#each categories}}
+    <div class="category">
+        <h2>{{this.name}}</h2>
+        {{#each this.meals}}
+        <div class="meal">
+            <h3>{{this.name}} - {{this.baseCost}} zł</h3>
+            {{#each this.parameters}}
+            <div class="parameter">
+                {{this.name}}:
+                {{#each this.options}}
+                <span>{{this.name}} (+{{this.cost}} zł)</span>
+                {{/each}}
+            </div>
+            {{/each}}
+        </div>
+        {{/each}}
+    </div>
+    {{/each}}
+</body>
+</html>

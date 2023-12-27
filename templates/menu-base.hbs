@@ -3,30 +3,64 @@
 <head>
     <title>Menu</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .category { margin-bottom: 30px; }
-        .meal { margin-top: 15px; }
-        .parameter { margin-left: 20px; font-style: italic; }
+        body { 
+            font-family: Arial, sans-serif;
+            background-image: linear-gradient(to bottom, #f0ecce, #e6e1be);
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .menu-container {
+            border: 2px solid blue;
+            display: flex;
+            margin: 10px;
+            flex-direction: column;
+        }
+
+        .category-container {
+            margin-bottom: 20px;
+            border: 2px solid red;
+            border-radius: 10px;
+            width: 45%;
+            position: relative;
+            display: inline-block;     
+        }
+        .category-name { 
+            font-size: 30px;
+            justify-content: center;
+        }
+        .meal { 
+            font-size: 15px;
+        }
+        .parameter { 
+            margin-left: 5px; 
+            font-style: italic; 
+        }
     </style>
 </head>
 <body>
-    {{#each categories}}
-    <div class="category">
-        <h2>{{this.name}}</h2>
-        {{#each this.meals}}
-        <div class="meal">
-            <h3>{{this.name}} - {{this.baseCost}} zł</h3>
-            {{#each this.parameters}}
-            <div class="parameter">
-                {{this.name}}:
-                {{#each this.options}}
-                <span>{{this.name}} (+{{this.cost}} zł)</span>
+    <div class="menu-container">
+        {{#each categories}}
+        <div class="category-container">
+            <h2 class="category-name">
+                {{this.name}}
+            </h2>
+            {{#each this.meals}}
+            <div class="meal">
+                <h3>{{this.name}} - {{this.baseCost}} zł</h3>
+                {{#each this.parameters}}
+                <div class="parameter">
+                    {{this.name}}:
+                    {{#each this.options}}
+                    <span>{{this.name}} (+{{this.cost}} zł)</span>
+                    {{/each}}
+                </div>
                 {{/each}}
             </div>
             {{/each}}
         </div>
         {{/each}}
     </div>
-    {{/each}}
 </body>
 </html>

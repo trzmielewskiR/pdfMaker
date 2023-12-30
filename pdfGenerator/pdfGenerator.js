@@ -2,13 +2,14 @@ const puppeteer = require('puppeteer');
 const fs = require('fs-extra');
 const hbs = require('handlebars');
 const path = require('path');
-const data = require('./database-template.json');
+//const data = require('./database-template.json');
 const Handlebars = require('handlebars');
 const helpers = require('handlebars-helpers')({
     handlebars: Handlebars
 });
 
 const compile = async function(templateName, data){
+    console.log(process.cwd());
     const filePath = path.join(process.cwd(), 'templates',`${templateName}.hbs`);
     const html = await fs.readFile(filePath, 'utf-8');
     return hbs.compile(html)(data);
@@ -34,14 +35,13 @@ hbs.registerHelper('addCosts', function(baseCost, additionalCost) {
     console.log(totalCost);
     return (totalCost / 100).toFixed(2); // Format for currency
 });
-(async function(){
-    try{
-        
+
+const generatePDF = async (jsonData) => {
+    try {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
 
-        const content = await compile('menu-base',data);
-
+        const content = await compile('menu-base', jsonData);
         await page.setContent(content);
         await page.emulateMediaType('screen');
         await page.pdf({
@@ -50,11 +50,12 @@ hbs.registerHelper('addCosts', function(baseCost, additionalCost) {
             printBackground: true
         });
 
-        console.log('done');
+        console.log('PDF generated successfully');
         await browser.close();
-        process.exit();
+    } catch (e) {
+        console.error('Error generating PDF:', e);
+        throw e;
+    }
+};
 
-    } catch(e){
-        console.log('error: ',e);
-    } 
-})();
+module.exports = generatePDF;

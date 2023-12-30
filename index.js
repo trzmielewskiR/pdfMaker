@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs-extra');
 const hbs = require('handlebars');
 const path = require('path');
-const data = require('./database-template.json');
+const data = require('./menuCardData.json');
 const Handlebars = require('handlebars');
 const helpers = require('handlebars-helpers')({
     handlebars: Handlebars
@@ -15,7 +15,7 @@ const compile = async function(templateName, data){
 };
 
 hbs.registerHelper('divideBy100', function(value) {
-    return (value / 100).toFixed(2); // Adjusts the price and fixes to 2 decimal places
+    return (value / 100).toFixed(2); 
 });
 
 hbs.registerHelper('hasSizeParameter', function(parameters) {
@@ -27,13 +27,14 @@ hbs.registerHelper('isZero', function(value) {
 });
 
 hbs.registerHelper('addCosts', function(baseCost, additionalCost) {
-    // Convert to numbers to ensure correct addition
-    console.log("base",baseCost);
-    console.log("add",additionalCost);
     let totalCost = Number(baseCost) + Number(additionalCost);
-    console.log(totalCost);
     return (totalCost / 100).toFixed(2); // Format for currency
 });
+
+hbs.registerHelper('hasNonSizeParameters', function(parameters) {
+    return parameters && parameters.some(param => param.id !== 1 && param.options && param.options.length > 0);
+});
+
 (async function(){
     try{
         

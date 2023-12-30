@@ -17,14 +17,13 @@
             margin: 10mm auto;
             padding: 10mm;
             box-sizing: border-box;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background-color: #f4f4f4;
         }
 
         .category-container {
             margin-bottom: 20px;
             padding: 10px;
+            page-break-inside: avoid;
         }
 
         .category-name { 
@@ -39,9 +38,11 @@
             display: flex;
             justify-content: space-between;
             margin: 5px 0;
+            page-break-inside: avoid;
         }
 
         .price-column {
+            font-size: 18px;
             text-align: right;
             width: 30%;
         }
@@ -60,27 +61,28 @@
 </head>
 <body>
     <div class="menu-container">
-        {{#each categories}}
+        {{#each data}}
         <div class="category-container">
             <h2 class="category-name">{{this.name}}</h2>
             
             <!-- Universal Parameters -->
-            <div class="universal-parameters">
-                <strong>Additional options for {{this.name}}:</strong>
-                {{#each this.meals.[0].parameters}}
-                    {{#unless (eq this.id 1)}} <!-- Exclude Size parameter -->
-                        <div>
-                            {{this.name}}: 
-                            {{#each this.options}}
-                                {{this.name}}{{#unless (isZero this.cost)}} (+{{divideBy100 this.cost}} zł){{/unless}}{{#unless @last}}, {{/unless}}
-                            {{/each}}
-                        </div>
-                    {{/unless}}
-                {{/each}}
-            </div>
-
+            {{#if (hasNonSizeParameters this.meals.[0].parameters)}}
+                <div class="universal-parameters">
+                    <strong>Możliwe dodatki:</strong>
+                    {{#each this.meals.[0].parameters}}
+                        {{#unless (eq this.id 1)}} <!-- Exclude Size parameter -->
+                            <div>
+                                {{this.name}}: 
+                                {{#each this.options}}
+                                    {{this.name}}{{#unless (isZero this.cost)}} (+{{divideBy100 this.cost}} zł){{/unless}}{{#unless @last}}, {{/unless}}
+                                {{/each}}
+                            </div>
+                        {{/unless}}
+                    {{/each}}
+                </div>
+            {{/if}}
             <!-- Price Column Header -->
-            <div class="meal"><span></span><div class="price-column"><strong>Price</strong></div></div>
+            <div class="meal"><span></span><div class="price-column"><strong>Cena</strong></div></div>
 
             <!-- Meals -->
             {{#each this.meals}}

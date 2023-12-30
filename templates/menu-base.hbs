@@ -3,30 +3,115 @@
 <head>
     <title>Menu</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .category { margin-bottom: 30px; }
-        .meal { margin-top: 15px; }
-        .parameter { margin-left: 20px; font-style: italic; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-container {
+            width: 100%;
+            max-width: 210mm;
+            margin: 10mm auto;
+            padding: 10mm;
+            box-sizing: border-box;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .category-container {
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .category-name { 
+            font-size: 24px;
+            text-align: center;
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+
+        .meal { 
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+
+        .price-column {
+            text-align: right;
+            width: 30%;
+        }
+
+        .universal-parameters { 
+            font-style: italic; 
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 10px;
+        }
+
+        .universal-parameters div {
+            display: block; /* Each parameter category in a new line */
+        }
     </style>
 </head>
 <body>
-    {{#each categories}}
-    <div class="category">
-        <h2>{{this.name}}</h2>
-        {{#each this.meals}}
-        <div class="meal">
-            <h3>{{this.name}} - {{this.baseCost}} zł</h3>
-            {{#each this.parameters}}
-            <div class="parameter">
-                {{this.name}}:
-                {{#each this.options}}
-                <span>{{this.name}} (+{{this.cost}} zł)</span>
+    <div class="menu-container">
+        {{#each categories}}
+        <div class="category-container">
+            <h2 class="category-name">{{this.name}}</h2>
+            
+            <!-- Universal Parameters -->
+            <div class="universal-parameters">
+                <strong>Additional options for {{this.name}}:</strong>
+                {{#each this.meals.[0].parameters}}
+                    {{#unless (eq this.id 1)}} <!-- Exclude Size parameter -->
+                        <div>
+                            {{this.name}}: 
+                            {{#each this.options}}
+                                {{this.name}}{{#unless (isZero this.cost)}} (+{{divideBy100 this.cost}} zł){{/unless}}{{#unless @last}}, {{/unless}}
+                            {{/each}}
+                        </div>
+                    {{/unless}}
                 {{/each}}
+            </div>
+
+            <!-- Price Column Header -->
+            <div class="meal"><span></span><div class="price-column"><strong>Price</strong></div></div>
+
+            <!-- Meals -->
+            {{#each this.meals}}
+            <div class="meal">
+                <span>{{this.name}}</span>
+                <div class="price-column">
+                    {{#if (hasSizeParameter this.parameters)}}
+                        {{!-- Size Parameter Prices --}}
+                        {{#each this.parameters}}
+                            {{#if (eq this.id 1)}} <!-- Size parameter -->
+                                {{#each this.options}}
+                                    <div>
+                                        {{this.name}}: 
+                                        {{#if (isZero this.cost)}}
+                                            {{divideBy100 ../../baseCost}} zł
+                                        {{else}}
+                                            {{addCosts ../../baseCost this.cost}} zł
+                                        {{/if}}
+                                    </div>
+                                {{/each}}
+                            {{/if}}
+                        {{/each}}
+                    {{else}}
+                        {{!-- Base Price for Meals Without Size Options --}}
+                        {{divideBy100 this.baseCost}} zł
+                    {{/if}}
+                </div>
             </div>
             {{/each}}
         </div>
         {{/each}}
     </div>
-    {{/each}}
 </body>
 </html>

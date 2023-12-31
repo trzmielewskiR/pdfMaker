@@ -38,7 +38,10 @@ hbs.registerHelper('addCosts', function(baseCost, additionalCost) {
 
 const generatePDF = async (jsonData) => {
     try {
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox'],
+        });
         const page = await browser.newPage();
 
         const content = await compile('menu-base', jsonData);

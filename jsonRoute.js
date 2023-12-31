@@ -1,8 +1,8 @@
 const express = require('express');
-const generatePDF = require('./pdfGenerator/pdfGenerator');
+const generatePDF = require('./pdfGenerator/pdfGenerator.js');
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
     console.log(req.body);
     const jsonData = req.body;
     if (!jsonData) {
@@ -11,19 +11,20 @@ router.post("/", (req, res) => {
     }
     try {
         console.log('Generating PDF');
-        generatePDF(jsonData);
+        // Use async/await to wait for PDF generation to complete
+        await generatePDF(jsonData);
+
+        const filePath = __dirname + '\\menu.pdf';
+        console.log(filePath);
+        res.download(filePath, "menu.pdf", (err) => {
+            if (err) {
+                res.status(500).json({error: err, message: "Error downloading the file"});
+            }
+        });
     } catch (error) {
         console.log('Error generating PDF: ', error);
         res.status(500).json({ message: 'Error generating PDF'});
     }
-
-    const filePath = __dirname + '\\menu.pdf';
-    console.log(filePath);
-    res.download(filePath, "menu.pdf", (err) => {
-        if (err) {
-            res.send({error: err, message: "Error downloading the file"})
-        }
-    });
 });
 
 

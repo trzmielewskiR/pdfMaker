@@ -161,11 +161,11 @@
                   "name": "Cienkie"
                 },
                 {
-                  "cost": 550,
+                  "cost": 650,
                   "name": "Normalne"
                 },
                 {
-                  "cost": 1090,
+                  "cost": 2090,
                   "name": "Grube"
                 }
               ]
@@ -252,11 +252,11 @@
                   "name": "Cienkie"
                 },
                 {
-                  "cost": 550,
+                  "cost": 750,
                   "name": "Normalne"
                 },
                 {
-                  "cost": 1090,
+                  "cost": 1290,
                   "name": "Grube"
                 }
               ]
@@ -438,7 +438,7 @@
                   "name": "Normalne"
                 },
                 {
-                  "cost": 1090,
+                  "cost": 1190,
                   "name": "Grube"
                 }
               ]

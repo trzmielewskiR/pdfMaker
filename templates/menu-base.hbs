@@ -45,7 +45,7 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 10px;
-            position: relative; /* Needed for the pseudo-element */
+            position: relative; 
         }
 
         .meal-name, .price-column, .additional-params {
@@ -79,12 +79,12 @@
         }
 
         .universal-parameters div {
-            display: block; /* Each parameter category in a new line */
+            display: block; 
         }
 
         .additional-params {
             display: flex;
-            flex-direction: column; /* Stack additional parameters vertically */
+            flex-direction: column; 
             align-items: flex-start;
              padding-left: 20px;
         }
@@ -98,12 +98,11 @@
         <div class="category-container">
             <h2 class="category-name">{{this.name}}</h2>
             
-            <!-- Universal Parameters -->
             {{#if (hasNonSizeParameters this.universalParameters)}}
                 <div class="universal-parameters">
                     <strong>Możliwe dodatki:</strong>
                     {{#each this.universalParameters}}
-                        {{#unless (eq this.id 1)}} <!-- Exclude Size parameter -->
+                        {{#unless (eq this.id 1)}} 
                             <div>
                                 {{this.name}}: 
                                 {{#each this.options}}
@@ -116,7 +115,6 @@
             {{/if}}
 
             <div class="meal"><span></span><div class="price-header"><strong>Cena</strong></div></div>
-            <!-- Meals -->
             {{#each this.meals}}
             <div class="meal-details">
                  
@@ -124,24 +122,21 @@
                 <div class="price-column">
 
                     {{#if (hasSizeParameter this.parameters)}}
-                        <!-- Size Parameter Prices -->
                         {{#each this.parameters}}
-                            {{#if (eq this.id 1)}} <!-- Size parameter -->
+                            {{#if (eq this.id 1)}}
                                 {{#each this.options}}
                                     <div>{{this.name}}: {{addCosts ../../this.baseCost this.cost}} zł</div>
                                 {{/each}}
                             {{/if}}
                         {{/each}}
                     {{else}}
-                        <!-- Base Price for Meals Without Size Options -->
                         {{divideBy100 this.baseCost}} zł
                     {{/if}}
                     
                 </div>
                 <div class="additional-params">
-                    <!-- Non-Universal Parameters -->
                     {{#each this.nonUniversalParams}}
-                        {{#unless (eq this.id 1)}} <!-- Exclude Size parameter -->
+                        {{#unless (eq this.id 1)}}
                         <div>
                         <strong>{{this.name}}:</strong>
                             {{#each this.options}}
@@ -154,7 +149,7 @@
                 </div>
                 
             </div>
-            <hr> <!-- Separator Line -->
+            <hr>
             {{/each}}
             
         </div>

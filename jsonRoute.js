@@ -11,7 +11,7 @@ router.post("/", async (req, res) => {
     }
     try {
         console.log('Generating PDF');
-        // Use async/await to wait for PDF generation to complete
+        
         await generatePDF(jsonData);
 
         const filePath = __dirname + '\\menu.pdf';

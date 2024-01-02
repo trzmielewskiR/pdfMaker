@@ -2,7 +2,6 @@ const puppeteer = require('puppeteer');
 const fs = require('fs-extra');
 const hbs = require('handlebars');
 const path = require('path');
-//const data = require('./database-template.json');
 const Handlebars = require('handlebars');
 const helpers = require('handlebars-helpers')({
     handlebars: Handlebars
@@ -15,11 +14,11 @@ const compile = async function(templateName, data){
     return hbs.compile(html)(data);
 };
 
+const processData = (data) => {
 data.data.forEach(category => {
-    // Initialize universal parameters for each category
+    
     category.universalParameters = [];
 
-    // Assuming first meal's parameters are representative
     const representativeMeal = category.meals[0];
 
     representativeMeal.parameters.forEach(param => {
@@ -41,7 +40,7 @@ data.data.forEach(category => {
         }
     });
 });
-
+};
 
 hbs.registerHelper('hasNonSizeParameters', function(universalParameters) {
     return universalParameters && universalParameters.some(param => param.id !== 2);
@@ -93,6 +92,8 @@ hbs.registerHelper('hasNonSizeParameters', function(parameters) {
 
 const generatePDF = async (data) => {
     try {
+
+        processData(data)
         
         const browser = await puppeteer.launch({
             headless: true,

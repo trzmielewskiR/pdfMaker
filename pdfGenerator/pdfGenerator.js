@@ -2,13 +2,14 @@ const puppeteer = require('puppeteer');
 const fs = require('fs-extra');
 const hbs = require('handlebars');
 const path = require('path');
-const data = require('./menuCardData.json');
+//const data = require('./database-template.json');
 const Handlebars = require('handlebars');
 const helpers = require('handlebars-helpers')({
     handlebars: Handlebars
 });
 
 const compile = async function(templateName, data){
+    console.log(process.cwd());
     const filePath = path.join(process.cwd(), 'templates',`${templateName}.hbs`);
     const html = await fs.readFile(filePath, 'utf-8');
     return hbs.compile(html)(data);
@@ -85,18 +86,21 @@ hbs.registerHelper('addCosts', function(baseCost, additionalCost) {
     return (totalCost / 100).toFixed(2);
 });
 
+
 hbs.registerHelper('hasNonSizeParameters', function(parameters) {
     return parameters && parameters.some(param => param.id !== 1 && param.options && param.options.length > 0);
 });
 
-(async function(){
-    try{
+const generatePDF = async (data) => {
+    try {
         
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox'],
+        });
         const page = await browser.newPage();
 
-        const content = await compile('menu-base',data);
-
+        const content = await compile('menu-base', data);
         await page.setContent(content);
         await page.emulateMediaType('screen');
         await page.pdf({
@@ -105,11 +109,12 @@ hbs.registerHelper('hasNonSizeParameters', function(parameters) {
             printBackground: true
         });
 
-        console.log('done');
+        console.log('PDF generated successfully');
         await browser.close();
-        process.exit();
+    } catch (e) {
+        console.error('Error generating PDF:', e);
+        throw e;
+    }
+};
 
-    } catch(e){
-        console.log('error: ',e);
-    } 
-})();
+module.exports = generatePDF;

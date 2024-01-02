@@ -6,6 +6,8 @@ const Handlebars = require('handlebars');
 const helpers = require('handlebars-helpers')({
     handlebars: Handlebars
 });
+const locateChrome = require('locate-chrome');
+
 
 const compile = async function(templateName, data){
     const filePath = path.join(process.cwd(), 'templates',`${templateName}.hbs`);
@@ -89,16 +91,20 @@ hbs.registerHelper('hasNonSizeParameters', function(parameters) {
 
 const generatePDF = async (data) => {
     try {
-
+        const executablePath = await new Promise(resolve => locateChrome((arg) => resolve(arg))) || '';
+        console.log('start processing data');
         processData(data)
-        
+        console.log('data proessed successfully');
         const browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox'],
+            executablePath: executablePath,
+            headless: 'new',
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
         });
+        console.log('browser launched successfully');
         const page = await browser.newPage();
-
+        console.log('page created successfully');
         const content = await compile('menu-base', data);
+        console.log('content compiled successfully');
         await page.setContent(content);
         await page.emulateMediaType('screen');
         await page.pdf({

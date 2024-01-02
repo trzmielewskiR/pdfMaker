@@ -16,10 +16,9 @@ const compile = async function(templateName, data){
 
 const processData = (data) => {
 data.data.forEach(category => {
-    // Initialize universal parameters for each category
+    
     category.universalParameters = [];
 
-    // Assuming first meal's parameters are representative
     const representativeMeal = category.meals[0];
 
     representativeMeal.parameters.forEach(param => {

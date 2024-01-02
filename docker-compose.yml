@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  pdfMaker_service:
+    image: pdfmaker:latest
+    container_name: pdfMaker_service
+    build:
+      context: .
+    ports:
+      - "3050:3050"
+    volumes:
+      - ./pdfMaker:/app

@@ -1,0 +1,9 @@
+.git
+./docker
+**/node_modules
+**/.eslint*
+**/.prettier
+README.md
+**/Dockerfile
+**/.dockerignore
+**/server

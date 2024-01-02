@@ -17,14 +17,13 @@
             margin: 10mm auto;
             padding: 10mm;
             box-sizing: border-box;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background-color: #f4f4f4;
         }
 
         .category-container {
             margin-bottom: 20px;
             padding: 10px;
+            page-break-inside: avoid;
         }
 
         .category-name { 
@@ -39,11 +38,37 @@
             display: flex;
             justify-content: space-between;
             margin: 5px 0;
+            page-break-inside: avoid;
+        }
+
+        .meal-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            position: relative; /* Needed for the pseudo-element */
+        }
+
+        .meal-name, .price-column, .additional-params {
+            flex: 1;
+            padding: 5px;
         }
 
         .price-column {
-            text-align: right;
-            width: 30%;
+    font-size: 18px;
+    text-align: right; /* Right align the price */
+    position: relative; /* For positioning the pseudo-element */
+    padding-right: 20px; /* Add some right padding */
+}
+        .price-header {
+    font-size: 18px;
+    text-align: left; /* Right align the price */
+    position: relative; /* For positioning the pseudo-element */
+    padding-right: 220px; /* Add some right padding */
+}
+
+        .price-column hr {
+            border-top: 1px solid #ccc;
+            margin-top: 10px;
         }
 
         .universal-parameters { 
@@ -56,6 +81,15 @@
         .universal-parameters div {
             display: block; /* Each parameter category in a new line */
         }
+
+        .additional-params {
+            display: flex;
+            flex-direction: column; /* Stack additional parameters vertically */
+            align-items: flex-start;
+             padding-left: 20px;
+        }
+
+
     </style>
 </head>
 <body>
@@ -65,53 +99,68 @@
             <h2 class="category-name">{{this.name}}</h2>
             
             <!-- Universal Parameters -->
-            <div class="universal-parameters">
-                <strong>Additional options for {{this.name}}:</strong>
-                {{#each this.meals.[0].parameters}}
-                    {{#unless (eq this.id 1)}} <!-- Exclude Size parameter -->
-                        <div>
-                            {{this.name}}: 
-                            {{#each this.options}}
-                                {{this.name}}{{#unless (isZero this.cost)}} (+{{divideBy100 this.cost}} zł){{/unless}}{{#unless @last}}, {{/unless}}
-                            {{/each}}
-                        </div>
-                    {{/unless}}
-                {{/each}}
-            </div>
+            {{#if (hasNonSizeParameters this.universalParameters)}}
+                <div class="universal-parameters">
+                    <strong>Możliwe dodatki:</strong>
+                    {{#each this.universalParameters}}
+                        {{#unless (eq this.id 1)}} <!-- Exclude Size parameter -->
+                            <div>
+                                {{this.name}}: 
+                                {{#each this.options}}
+                                    {{this.name}}{{#unless (isZero this.cost)}} (+{{divideBy100 this.cost}} zł){{/unless}}{{#unless @last}}, {{/unless}}
+                                {{/each}}
+                            </div>
+                        {{/unless}}
+                    {{/each}}
+                </div>
+            {{/if}}
 
-            <!-- Price Column Header -->
-            <div class="meal"><span></span><div class="price-column"><strong>Price</strong></div></div>
-
-            <!-- Meals -->
+            <div class="meal"><span></span><div class="price-header"><strong>Cena</strong></div></div>
+<!-- Meals -->
             {{#each this.meals}}
-            <div class="meal">
-                <span>{{this.name}}</span>
+            <div class="meal-details">
+                 
+                <div class="meal-name">{{this.name}}</div>           
                 <div class="price-column">
+
                     {{#if (hasSizeParameter this.parameters)}}
-                        {{!-- Size Parameter Prices --}}
+                        <!-- Size Parameter Prices -->
                         {{#each this.parameters}}
                             {{#if (eq this.id 1)}} <!-- Size parameter -->
                                 {{#each this.options}}
-                                    <div>
-                                        {{this.name}}: 
-                                        {{#if (isZero this.cost)}}
-                                            {{divideBy100 ../../baseCost}} zł
-                                        {{else}}
-                                            {{addCosts ../../baseCost this.cost}} zł
-                                        {{/if}}
-                                    </div>
+                                    <div>{{this.name}}: {{addCosts ../../this.baseCost this.cost}} zł</div>
                                 {{/each}}
                             {{/if}}
                         {{/each}}
                     {{else}}
-                        {{!-- Base Price for Meals Without Size Options --}}
+                        <!-- Base Price for Meals Without Size Options -->
                         {{divideBy100 this.baseCost}} zł
                     {{/if}}
+                    
                 </div>
+                <div class="additional-params">
+                    <!-- Non-Universal Parameters -->
+                    {{#each this.nonUniversalParams}}
+                        {{#unless (eq this.id 1)}} <!-- Exclude Size parameter -->
+                        <div>
+                        <strong>{{this.name}}:</strong>
+                            {{#each this.options}}
+                                <div>{{this.name}}{{#unless (isZero this.cost)}} (+{{divideBy100 this.cost}} zł){{/unless}}</div>
+                            {{/each}}
+                            </div>
+                        {{/unless}}
+                    {{/each}}
+                    
+                </div>
+                
             </div>
+            <hr> <!-- Separator Line -->
             {{/each}}
+            
         </div>
         {{/each}}
     </div>
 </body>
 </html>
+
+

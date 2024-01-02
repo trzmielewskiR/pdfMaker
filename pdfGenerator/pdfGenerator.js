@@ -8,7 +8,6 @@ const helpers = require('handlebars-helpers')({
 });
 
 const compile = async function(templateName, data){
-    console.log(process.cwd());
     const filePath = path.join(process.cwd(), 'templates',`${templateName}.hbs`);
     const html = await fs.readFile(filePath, 'utf-8');
     return hbs.compile(html)(data);
@@ -47,12 +46,10 @@ hbs.registerHelper('hasNonSizeParameters', function(universalParameters) {
 });
 
 hbs.registerHelper('isNonUniversal', function(paramId, options, allMeals) {
-    // Check if the parameter has a cost in the current meal
     if (options.some(option => option.cost > 0)) {
         return true;
     }
 
-    // Check if the parameter cost varies between meals
     for (let i = 1; i < allMeals.length; i++) {
         const currentMealParam = allMeals[i].parameters.find(p => p.id === paramId);
         const firstMealParam = allMeals[0].parameters.find(p => p.id === paramId);
@@ -60,11 +57,11 @@ hbs.registerHelper('isNonUniversal', function(paramId, options, allMeals) {
         if (!currentMealParam || !firstMealParam) continue;
 
         if (JSON.stringify(currentMealParam.options) !== JSON.stringify(firstMealParam.options)) {
-            return true; // Different parameter options found
+            return true;
         }
     }
 
-    return false; // Parameter is universal
+    return false;
 });
 
 

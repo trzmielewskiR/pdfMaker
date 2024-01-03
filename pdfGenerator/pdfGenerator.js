@@ -16,31 +16,43 @@ const compile = async function(templateName, data){
 };
 
 const processData = (data) => {
-data.data.forEach(category => {
-    
-    category.universalParameters = [];
+    data.data.forEach(category => {
 
-    const representativeMeal = category.meals[0];
-
-    representativeMeal.parameters.forEach(param => {
-        const isUniversal = category.meals.every(meal => {
-            const mealParam = meal.parameters.find(p => p.id === param.id);
-            return mealParam && JSON.stringify(mealParam.options) === JSON.stringify(param.options);
-        });
-
-        if (isUniversal) {
-            category.universalParameters.push(param);
-        } else {
-            category.meals.forEach(meal => {
-                meal.nonUniversalParams = meal.nonUniversalParams || [];
-                const nonUnivParam = meal.parameters.find(p => p.id === param.id);
-                if (nonUnivParam) {
-                    meal.nonUniversalParams.push(nonUnivParam);
-                }
-            });
+        if (!category.meals || category.meals.length === 0) {
+            return;
         }
+        
+        category.universalParameters = [];
+
+        const representativeMeal = category.meals[0];
+
+        if (!representativeMeal.parameters) {
+            return;
+        }
+
+        representativeMeal.parameters.forEach(param => {
+            const isUniversal = category.meals.every(meal => {
+                const mealParam = meal.parameters.find(p => p.id === param.id);
+                return mealParam && JSON.stringify(mealParam.options) === JSON.stringify(param.options);
+            });
+
+            if (isUniversal) {
+                category.universalParameters.push(param);
+            } else {
+                category.meals.forEach(meal => {
+                    if (!meal.parameters) {
+                        return;
+                    }
+                    
+                    meal.nonUniversalParams = meal.nonUniversalParams || [];
+                    const nonUnivParam = meal.parameters.find(p => p.id === param.id);
+                    if (nonUnivParam) {
+                        meal.nonUniversalParams.push(nonUnivParam);
+                    }
+                });
+            }
+        });
     });
-});
 };
 
 hbs.registerHelper('hasNonSizeParameters', function(universalParameters) {

@@ -9,17 +9,17 @@ router.post("/", async (req, res) => {
     }
     try {
         
-        // const pdfBuffer = await generatePDF(jsonData);
-        // res.setHeader('Content-Type', 'application/pdf');
-        // res.setHeader('Content-Disposition', 'attachment; filename=menu.pdf');
-        await generatePDF(jsonData);
-        const filePath = __dirname + '/menu.pdf';
-        res.download(filePath, "menu.pdf", (err) => {
-            if (err) {
-                res.status(500).json({error: err, message: "Error downloading the file"});
-            }
-        });
-        // res.send(pdfBuffer);
+        const pdfBuffer = await generatePDF(jsonData);
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename=menu.pdf');
+        // await generatePDF(jsonData);
+        // const filePath = __dirname + '/menu.pdf';
+        // res.download(filePath, "menu.pdf", (err) => {
+        //     if (err) {
+        //         res.status(500).json({error: err, message: "Error downloading the file"});
+        //     }
+        // });
+        res.send(pdfBuffer);
     } catch (error) {
         res.status(500).json({ message: 'Error generating PDF'});
     }
